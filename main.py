@@ -109,11 +109,11 @@ def draw_d(dealer_hand, dealer_h):
   dealer_h.append(Deck[x])
   return dealer_h
 
-def bust(x):
-  if x > 21:
-    bust = True
+def bust(player): 
+  if player > 21:
+    busted = True
     print("You're Bust!")
-    return bust
+    return busted
 
 def compare(player, dealer):
   if player > dealer or dealer > 21:
@@ -137,7 +137,8 @@ blackjack = blackjack(player)
 display(player, dealer, player_h, dealer_h)
 if blackjack == True:
   print("You Got Blackjack!")
-  end = True
+  busted = False #Allows bypass of if statement
+  end = True #Skips dealer draw
 
 #Draw Cards
 while end == False:
@@ -146,23 +147,26 @@ while end == False:
     player_h = draw_h(player_hand, player_h)
     player = count_p(player_h)
     display(player, dealer, player_h, dealer_h)
-    bust = bust(player)
+    busted = bust(player) #Checks if player bust after drawing
     if player == 21:
       draw = False
-    if bust == True:
+    if busted == True:
       end = True
   else:
+    busted = False
     while dealer<17:
+      display(player, dealer, player_h, dealer_h)
       print("Dealer is drawing a card...\n")
-      time.sleep(1)
+      time.sleep(2)
+      clear()
       dealer_h = draw_d(dealer_hand, dealer_h)
       dealer = count_d(dealer_h)
       display(player, dealer, player_h, dealer_h)
-      time.sleep(4)
+      time.sleep(3)
       clear()
     display(player, dealer, player_h, dealer_h)
     end = True
-if bust == True:
+if busted == True: #Player Bust
   print("Game Over,\n" "You Lose.")
 else:
-  compare(player, dealer)
+  compare(player, dealer) #Compare player hand values
